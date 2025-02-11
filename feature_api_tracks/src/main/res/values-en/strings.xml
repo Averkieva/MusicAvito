@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MusicAvito</string>
+
+    <!-- Api tracks screen -->
+    <string name="search">Search</string>
+    <string name="search_hint">Enter text</string>
+    <string name="cancel_description">Cancel</string>
+
+    <!-- Item track -->
+    <string name="track_title_placeholder">Track Title</string>
+    <string name="track_artist_placeholder">Artist</string>
+    <string name="placeholder_description">Placeholder description</string>
+</resources>

@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MusicAvito"
 include(":app")
+include(":feature_api_tracks")

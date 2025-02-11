@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MusicAvito</string>
+
+    <!-- Api tracks screen -->
+    <string name="search">Поиск</string>
+    <string name="search_hint">Введите текст</string>
+    <string name="cancel_description">Отменить</string>
+
+    <!-- Item track -->
+    <string name="track_title_placeholder">Название трека</string>
+    <string name="track_artist_placeholder">Исполнитель</string>
+    <string name="placeholder_description">Описание плейсхолдера</string>
+</resources>
