@@ -21,5 +21,7 @@
     <dimen name="edittext_corner_radius">18dp</dimen>
 
     <!-- Icon and Image Sizes -->
-    <dimen name="track_cover_size">60dp</dimen>
+    <dimen name="track_cover_size">50dp</dimen>
+    <dimen name="error_icon_size">60dp</dimen>
+
 </resources>
