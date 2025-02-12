@@ -11,6 +11,7 @@
         android:layout_height="@dimen/track_cover_size"
         android:contentDescription="@string/placeholder_description"
         android:scaleType="centerCrop"
+        android:layout_marginStart="@dimen/margin_small"
         android:src="@drawable/cover_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

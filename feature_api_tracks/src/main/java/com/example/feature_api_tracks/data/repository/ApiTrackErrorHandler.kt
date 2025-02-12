@@ -20,7 +20,7 @@ object ApiTrackErrorHandler {
             private fun readResolve(): Any = ServerError
         }
 
-        data object UnknownError : TrackError(R.string.track_error_unknown_error, R.drawable.ic_launcher_foreground) {
+        data object UnknownError : TrackError(R.string.track_error_unknown_error, R.drawable.unknown_error_image) {
             private fun readResolve(): Any = UnknownError
         }
     }
