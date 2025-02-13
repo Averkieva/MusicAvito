@@ -1,4 +1,4 @@
-package com.example.feature_api_tracks.domain.search.model
+package com.example.feature_playback_tracks.domain.model
 
 data class Track(
     val id: String,

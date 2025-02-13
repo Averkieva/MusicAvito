@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feature_api_tracks.data.repository.ApiTrackErrorHandler
-import com.example.feature_api_tracks.domain.search.model.Track
 import com.example.feature_api_tracks.domain.search.repository.ApiTrackRepository
+import com.example.feature_playback_tracks.domain.model.Track
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +20,10 @@ class ApiTrackViewModel @Inject constructor(
     private val _error = MutableLiveData<ApiTrackErrorHandler.TrackError?>()
     val error: LiveData<ApiTrackErrorHandler.TrackError?> get() = _error
 
+    private var lastQuery: String? = null
+
     fun loadTopTracks() {
+        lastQuery = null
         viewModelScope.launch {
             val result = trackRepository.getTopTracks()
             result.fold(
@@ -36,6 +39,7 @@ class ApiTrackViewModel @Inject constructor(
     }
 
     fun searchTracks(query: String) {
+        lastQuery = query
         viewModelScope.launch {
             val result = trackRepository.searchTracks(query)
             result.fold(
@@ -47,6 +51,14 @@ class ApiTrackViewModel @Inject constructor(
                     _error.value = error as? ApiTrackErrorHandler.TrackError
                 }
             )
+        }
+    }
+
+    fun restoreLastTracks() {
+        if (lastQuery.isNullOrEmpty()) {
+            loadTopTracks()
+        } else {
+            searchTracks(lastQuery!!)
         }
     }
 }

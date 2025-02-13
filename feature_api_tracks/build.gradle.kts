@@ -35,6 +35,8 @@ android {
 
 dependencies {
 
+    implementation(project(":feature_playback_tracks"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -48,6 +50,8 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation (libs.androidx.swiperefreshlayout)
     implementation(libs.dagger)
+    implementation(libs.androidx.navigation.fragment.ktx.v274)
+    implementation(libs.androidx.navigation.ui.ktx.v274)
     kapt(libs.dagger.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

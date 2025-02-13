@@ -2,6 +2,7 @@ package com.example.feature_api_tracks.ui.search.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.feature_api_tracks.databinding.FragmentApiTracksBinding
@@ -30,9 +32,11 @@ class ApiTrackFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val networkObserver by lazy { NetworkObserver(requireContext()) }
-    private val trackAdapter by lazy { ApiTrackAdapter(emptyList()) }
-
-    private var currentQuery: String? = null
+    private val trackAdapter by lazy {
+        ApiTrackAdapter(emptyList()) { trackId ->
+            openPlayer(trackId)
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,13 +65,18 @@ class ApiTrackFragment : Fragment() {
         setupSearch()
         observeNetworkChanges()
 
-        viewModel.loadTopTracks()
+        viewModel.restoreLastTracks()
 
         binding.root.setOnTouchListener { _, _ ->
             hideKeyboard()
             binding.searchInputEditText.clearFocus()
             false
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.restoreLastTracks()
     }
 
     private fun setupRecyclerView() {
@@ -115,8 +124,6 @@ class ApiTrackFragment : Fragment() {
                     binding.cancelButton.visibility =
                         if (query.isNotEmpty()) View.VISIBLE else View.GONE
 
-                    currentQuery = query
-
                     if (query.isNotEmpty()) viewModel.searchTracks(query)
                     else viewModel.loadTopTracks()
                 }
@@ -128,7 +135,6 @@ class ApiTrackFragment : Fragment() {
 
         binding.cancelButton.setOnClickListener {
             binding.searchInputEditText.text.clear()
-            currentQuery = null
         }
 
         binding.cancelButton.visibility = View.GONE
@@ -137,11 +143,7 @@ class ApiTrackFragment : Fragment() {
     private fun observeNetworkChanges() {
         networkObserver.networkAvailable.observe(viewLifecycleOwner) { isAvailable ->
             if (isAvailable) {
-                if (currentQuery.isNullOrEmpty()) {
-                    viewModel.loadTopTracks()
-                } else {
-                    viewModel.searchTracks(currentQuery!!)
-                }
+                viewModel.restoreLastTracks()
             }
         }
         networkObserver.register()
@@ -151,6 +153,11 @@ class ApiTrackFragment : Fragment() {
         val inputMethodManager =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    private fun openPlayer(trackId: String) {
+        val deepLinkUri = Uri.parse("musicavito://player/$trackId")
+        findNavController().navigate(deepLinkUri)
     }
 
     override fun onDestroyView() {
