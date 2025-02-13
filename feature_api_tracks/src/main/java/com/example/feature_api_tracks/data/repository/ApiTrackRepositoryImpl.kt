@@ -1,6 +1,5 @@
 package com.example.feature_api_tracks.data.repository
 
-import android.util.Log
 import com.example.feature_api_tracks.data.api.DeezerApiService
 import com.example.feature_api_tracks.domain.search.model.Album
 import com.example.feature_api_tracks.domain.search.model.Artist

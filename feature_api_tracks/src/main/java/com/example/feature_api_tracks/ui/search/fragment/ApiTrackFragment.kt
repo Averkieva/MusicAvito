@@ -13,26 +13,33 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.feature_api_tracks.data.api.RetrofitClient
-import com.example.feature_api_tracks.data.repository.ApiTrackRepositoryImpl
 import com.example.feature_api_tracks.databinding.FragmentApiTracksBinding
+import com.example.feature_api_tracks.di.DaggerFeatureComponent
 import com.example.feature_api_tracks.ui.search.adapter.ApiTrackAdapter
 import com.example.feature_api_tracks.ui.search.viewmodel.ApiTrackViewModel
-import com.example.feature_api_tracks.ui.search.viewmodel.ApiViewModelFactory
 import com.example.feature_api_tracks.utils.NetworkObserver
+import javax.inject.Inject
 
 class ApiTrackFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: ApiTrackViewModel
+
     private var _binding: FragmentApiTracksBinding? = null
     private val binding get() = _binding!!
 
     private val networkObserver by lazy { NetworkObserver(requireContext()) }
     private val trackAdapter by lazy { ApiTrackAdapter(emptyList()) }
-    private val viewModel by lazy {
-        val repository = ApiTrackRepositoryImpl(RetrofitClient.api)
-        ViewModelProvider(this, ApiViewModelFactory(repository))[ApiTrackViewModel::class.java]
-    }
 
     private var currentQuery: String? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val featureComponent = DaggerFeatureComponent.factory().create()
+        featureComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +53,8 @@ class ApiTrackFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(this, viewModelFactory)[ApiTrackViewModel::class.java]
 
         setupRecyclerView()
         setupObservers()

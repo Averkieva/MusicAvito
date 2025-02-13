@@ -8,8 +8,11 @@ import com.example.feature_api_tracks.data.repository.ApiTrackErrorHandler
 import com.example.feature_api_tracks.domain.search.model.Track
 import com.example.feature_api_tracks.domain.search.repository.ApiTrackRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ApiTrackViewModel(private val trackRepository: ApiTrackRepository) : ViewModel() {
+class ApiTrackViewModel @Inject constructor(
+    private val trackRepository: ApiTrackRepository
+) : ViewModel() {
 
     private val _tracks = MutableLiveData<List<Track>>()
     val tracks: LiveData<List<Track>> get() = _tracks
