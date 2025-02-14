@@ -5,6 +5,7 @@ import com.example.feature_playback_tracks.domain.model.Album
 import com.example.feature_playback_tracks.domain.model.Artist
 import com.example.feature_playback_tracks.domain.model.Track
 import com.example.feature_playback_tracks.domain.repository.PlayerTrackRepository
+import com.example.feature_playback_tracks.utils.TimeAndDateUtils.formatReleaseDate
 import javax.inject.Inject
 
 class PlayerTrackRepositoryImpl @Inject constructor(
@@ -24,9 +25,12 @@ class PlayerTrackRepositoryImpl @Inject constructor(
                 album = Album(
                     id = response.album.id,
                     title = response.album.title,
-                    cover = response.album.cover
+                    cover = response.album.cover,
+                    releaseDate = formatReleaseDate(response.album.releaseDate)
                 ),
-                duration = response.duration
+                duration = response.duration,
+                preview = response.preview,
+                trackPosition = response.trackPosition
             )
 
             Result.success(track)

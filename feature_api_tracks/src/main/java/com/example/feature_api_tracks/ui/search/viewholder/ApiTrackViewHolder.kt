@@ -6,8 +6,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.feature_api_tracks.R
 import com.example.feature_api_tracks.databinding.ItemTrackBinding
-import com.example.feature_api_tracks.utils.TimeUtils
 import com.example.feature_playback_tracks.domain.model.Track
+import com.example.feature_playback_tracks.utils.TimeAndDateUtils
 
 class ApiTrackViewHolder(
     private val binding: ItemTrackBinding,
@@ -17,7 +17,7 @@ class ApiTrackViewHolder(
     fun bind(track: Track) {
         binding.trackTitleTextView.text = track.title
 
-        val formattedDuration = TimeUtils.formatDuration(track.duration)
+        val formattedDuration = TimeAndDateUtils.formatDuration(track.duration)
         val artistWithDuration = "${track.artist.name} • $formattedDuration"
         binding.trackArtistTextView.text = artistWithDuration
 

@@ -5,6 +5,7 @@ import com.example.feature_playback_tracks.data.api.DeezerApiService
 import com.example.feature_playback_tracks.domain.model.Album
 import com.example.feature_playback_tracks.domain.model.Artist
 import com.example.feature_playback_tracks.domain.model.Track
+import com.example.feature_playback_tracks.utils.TimeAndDateUtils.formatReleaseDate
 
 class ApiTrackRepositoryImpl(private val apiService: DeezerApiService) : ApiTrackRepository {
 
@@ -22,11 +23,15 @@ class ApiTrackRepositoryImpl(private val apiService: DeezerApiService) : ApiTrac
                     album = Album(
                         id = it.album.id,
                         title = it.album.title,
-                        cover = it.album.cover
+                        cover = it.album.cover,
+                        releaseDate = formatReleaseDate(it.album.releaseDate)
                     ),
-                    duration = it.duration
+                    duration = it.duration,
+                    preview = it.preview,
+                    trackPosition = it.trackPosition
                 )
             }
+            //To Do create mapper
             if (tracks.isEmpty()) Result.failure(ApiTrackErrorHandler.getEmptyStateError())
             else Result.success(tracks)
         } catch (e: Exception) {
@@ -48,9 +53,12 @@ class ApiTrackRepositoryImpl(private val apiService: DeezerApiService) : ApiTrac
                     album = Album(
                         id = it.album.id,
                         title = it.album.title,
-                        cover = it.album.cover
+                        cover = it.album.cover,
+                        releaseDate = formatReleaseDate(it.album.releaseDate)
                     ),
-                    duration = it.duration
+                    duration = it.duration,
+                    preview = it.preview,
+                    trackPosition = it.trackPosition
                 )
             }
             if (tracks.isEmpty()) Result.failure(ApiTrackErrorHandler.getEmptyStateError())

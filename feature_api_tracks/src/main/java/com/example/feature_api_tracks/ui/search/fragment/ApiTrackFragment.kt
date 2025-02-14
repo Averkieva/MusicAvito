@@ -8,9 +8,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +23,7 @@ import com.example.feature_api_tracks.di.DaggerFeatureComponent
 import com.example.feature_api_tracks.ui.search.adapter.ApiTrackAdapter
 import com.example.feature_api_tracks.ui.search.viewmodel.ApiTrackViewModel
 import com.example.feature_api_tracks.utils.NetworkObserver
+import com.example.feature_playback_tracks.ui.player.viewmodel.SharedTrackViewModel
 import javax.inject.Inject
 
 class ApiTrackFragment : Fragment() {
@@ -32,11 +36,14 @@ class ApiTrackFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val networkObserver by lazy { NetworkObserver(requireContext()) }
+
     private val trackAdapter by lazy {
         ApiTrackAdapter(emptyList()) { trackId ->
             openPlayer(trackId)
         }
     }
+
+    private val sharedViewModel: SharedTrackViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -98,15 +105,16 @@ class ApiTrackFragment : Fragment() {
     private fun setupObservers() {
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
             trackAdapter.updateTracks(tracks)
-            binding.errorLayout.visibility = View.GONE
-            binding.resultRecyclerView.visibility = View.VISIBLE
+            sharedViewModel.setTrackList(tracks)
+            binding.errorLayout.visibility = GONE
+            binding.resultRecyclerView.visibility = VISIBLE
         }
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             val hasError = error != null
             if (hasError) {
-                binding.errorLayout.visibility = View.VISIBLE
-                binding.resultRecyclerView.visibility = View.GONE
+                binding.errorLayout.visibility = VISIBLE
+                binding.resultRecyclerView.visibility = GONE
                 if (error != null) {
                     binding.errorMessageTextView.text = getString(error.messageRes)
                 }
@@ -122,7 +130,7 @@ class ApiTrackFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 s?.toString()?.let { query ->
                     binding.cancelButton.visibility =
-                        if (query.isNotEmpty()) View.VISIBLE else View.GONE
+                        if (query.isNotEmpty()) VISIBLE else GONE
 
                     if (query.isNotEmpty()) viewModel.searchTracks(query)
                     else viewModel.loadTopTracks()
@@ -137,7 +145,7 @@ class ApiTrackFragment : Fragment() {
             binding.searchInputEditText.text.clear()
         }
 
-        binding.cancelButton.visibility = View.GONE
+        binding.cancelButton.visibility = GONE
     }
 
     private fun observeNetworkChanges() {
@@ -156,13 +164,17 @@ class ApiTrackFragment : Fragment() {
     }
 
     private fun openPlayer(trackId: String) {
-        val deepLinkUri = Uri.parse("musicavito://player/$trackId")
-        findNavController().navigate(deepLinkUri)
+        sharedViewModel.setCurrentTrack(trackId)
+        findNavController().navigate(Uri.parse("$DEEP_LINK$trackId"))
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         networkObserver.unregister()
         _binding = null
+    }
+
+    companion object {
+        private const val DEEP_LINK = "musicavito://player/"
     }
 }

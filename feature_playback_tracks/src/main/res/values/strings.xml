@@ -11,4 +11,14 @@
     <string name="prev_button_description">Предыдущий трек</string>
     <string name="play_pause_button_description">Воспроизведение/Пауза</string>
     <string name="next_button_description">Следующий трек</string>
+    <string name="release_year">Год релиза</string>
+    <string name="track_duration_label">Длительность трека</string>
+    <string name="track_position_label">Позиция трека в альбоме</string>
+    <string name="placeholder">-</string>
+
+    <!-- PlayerTrackFragment toasts -->
+    <string name="error_no_track_id">Ошибка: trackId не передан</string>
+    <string name="error_last_track">Это последний трек</string>
+    <string name="error_first_track">Это первый трек</string>
+
 </resources>
