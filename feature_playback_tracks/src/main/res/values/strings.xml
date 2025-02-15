@@ -15,10 +15,19 @@
     <string name="track_duration_label">Длительность трека</string>
     <string name="track_position_label">Позиция трека в альбоме</string>
     <string name="placeholder">-</string>
+    <string name="download_track">Скачать трек</string>
+    <string name="back_button_description">Описание кнопки назад</string>
 
-    <!-- PlayerTrackFragment toasts -->
+    <!-- PlayerTrackFragment -->
     <string name="error_no_track_id">Ошибка: trackId не передан</string>
     <string name="error_last_track">Это последний трек</string>
     <string name="error_first_track">Это первый трек</string>
+    <string name="track_download_success">Трек скачан: %1$s</string>
+    <string name="track_download_error">Ошибка скачивания</string>
+    <string name="already_downloaded">Трек уже скачан</string>
+
+    <!-- TrackDownloaderErrors toasts -->
+    <string name="download_error">Ошибка загрузки: %1$d</string>
+    <string name="stream_read_error">Ошибка чтения потока</string>
 
 </resources>

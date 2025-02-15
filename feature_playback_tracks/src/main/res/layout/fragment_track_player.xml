@@ -6,6 +6,17 @@
     android:background="@color/white"
     android:padding="@dimen/padding_large">
 
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back_button_description"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/padding_medium" />
+
     <ImageView
         android:id="@+id/albumCoverImageView"
         android:layout_width="@dimen/album_cover_size"
@@ -251,5 +262,18 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/downloadTrackButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/download_track"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
+        android:padding="@dimen/padding_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/trackInfoLinearLayout"
+        android:layout_marginTop="@dimen/padding_large" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

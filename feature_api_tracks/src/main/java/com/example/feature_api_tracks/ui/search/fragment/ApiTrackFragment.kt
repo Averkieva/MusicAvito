@@ -105,7 +105,13 @@ class ApiTrackFragment : Fragment() {
     private fun setupObservers() {
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
             trackAdapter.updateTracks(tracks)
-            sharedViewModel.setTrackList(tracks)
+
+            if (viewModel.isSearchMode()) {
+                sharedViewModel.setSearchTracks(tracks)
+            } else {
+                sharedViewModel.setTopTracks(tracks)
+            }
+
             binding.errorLayout.visibility = GONE
             binding.resultRecyclerView.visibility = VISIBLE
         }

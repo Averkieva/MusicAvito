@@ -2,20 +2,27 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/apiTrackFragment">
+    app:startDestination="@id/downloadedTracksFragment">
 
     <fragment
         android:id="@+id/apiTrackFragment"
         android:name="com.example.feature_api_tracks.ui.search.fragment.ApiTrackFragment"
-        android:label="API Tracks"
+        android:label="@string/api_tracks_fragment"
         tools:layout="@layout/fragment_api_tracks">
 
     </fragment>
 
     <fragment
+        android:id="@+id/downloadedTracksFragment"
+        android:name="com.example.feature_download_tracks.ui.fragment.DownloadedTracksFragment"
+        android:label="@string/downloaded_tracks_fragment"
+        tools:layout="@layout/fragment_downloaded_tracks" />
+
+
+    <fragment
         android:id="@+id/playerFragment"
         android:name="com.example.feature_playback_tracks.ui.player.fragment.PlayerTrackFragment"
-        android:label="Player"
+        android:label="@string/track_player_fragment"
         tools:layout="@layout/fragment_track_player">
 
         <deepLink app:uri="musicavito://player/{trackId}" />

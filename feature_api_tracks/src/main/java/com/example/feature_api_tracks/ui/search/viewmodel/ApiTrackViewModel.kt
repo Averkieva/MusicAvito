@@ -61,6 +61,10 @@ class ApiTrackViewModel @Inject constructor(
             searchTracks(lastQuery!!)
         }
     }
+
+    fun isSearchMode(): Boolean {
+        return !lastQuery.isNullOrEmpty()
+    }
 }
 
 

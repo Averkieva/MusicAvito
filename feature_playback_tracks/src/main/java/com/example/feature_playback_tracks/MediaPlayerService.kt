@@ -4,7 +4,6 @@ import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
@@ -28,16 +27,13 @@ class MediaPlaybackService : Service() {
         initMediaSession()
         mediaPlayerRepository = provideMediaPlayerRepository()
 
-        // Подписка на изменения isPlaying
         mediaPlayerRepository?.isPlaying?.observeForever { isPlaying ->
             Log.d("MediaPlaybackService", "isPlaying changed: $isPlaying")
             updatePlaybackState()
         }
 
-        // Запуск сервиса в foreground
         startForeground(1, createNotification())
 
-        // Предотвращение отключения сервиса системой
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MediaPlaybackService::lock")
         wakeLock.acquire()
@@ -175,7 +171,7 @@ class MediaPlaybackService : Service() {
     }
 
     private fun provideMediaPlayerRepository(): MediaPlayerRepository {
-        return MediaPlayerRepositoryImpl(SharedTrackViewModel())
+        return MediaPlayerRepositoryImpl(SharedTrackViewModel(application))
     }
 
     companion object {

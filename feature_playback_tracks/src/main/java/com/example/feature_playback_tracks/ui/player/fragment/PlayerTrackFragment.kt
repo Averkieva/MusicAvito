@@ -103,6 +103,10 @@ class PlayerTrackFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         binding.playPauseImageButton.setOnClickListener {
             viewModel.togglePlayPause()
         }
@@ -140,8 +144,7 @@ class PlayerTrackFragment : Fragment() {
         binding.trackTitleTextView.text = track.title
         binding.artistNameTextView.text = track.artist.name
         binding.albumNameTextView.text = track.album.title
-        binding.trackDurationValueTextView.text =
-            TimeAndDateUtils.formatDuration(track.duration)
+        binding.trackDurationValueTextView.text = TimeAndDateUtils.formatDuration(track.duration)
         binding.trackPositionValueTextView.text = track.trackPosition.toString()
         binding.albumNameValueTextView.text = track.album.title
         binding.releaseYearValueTextView.text = track.album.releaseDate
@@ -152,6 +155,31 @@ class PlayerTrackFragment : Fragment() {
             .error(R.drawable.cover_placeholder)
             .transform(CenterCrop(), RoundedCorners(10))
             .into(binding.albumCoverImageView)
+
+        // Проверка статуса загрузки трека
+        sharedViewModel.isTrackDownloaded(track.id).observe(viewLifecycleOwner) { isDownloaded ->
+            if (isDownloaded) {
+                binding.downloadTrackButton.text = getString(R.string.already_downloaded)
+                binding.downloadTrackButton.isEnabled = false
+            } else {
+                binding.downloadTrackButton.text = getString(R.string.download_track)
+                binding.downloadTrackButton.isEnabled = true
+
+                binding.downloadTrackButton.setOnClickListener {
+                    val downloader = TrackDownloader(requireContext(), sharedViewModel)
+                    downloader.downloadTrack(track,
+                        onSuccess = {
+                            showToast(getString(R.string.track_download_success, track.title))
+                            binding.downloadTrackButton.text = getString(R.string.already_downloaded)
+                            binding.downloadTrackButton.isEnabled = false
+                        },
+                        onError = {
+                            showToast(getString(R.string.track_download_error))
+                        }
+                    )
+                }
+            }
+        }
     }
 
     private fun setupSeekBar() {

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MusicAvito</string>
+
+    <!-- Fragment api tracks -->
+    <string name="download_tracks">Скачанные треки</string>
+    <string name="search_hint">Введите текст</string>
+    <string name="cancel_description">Отменить</string>
+    <string name="error_description">Описание ошибки</string>
+
+    <!-- Item track -->
+    <string name="track_title_placeholder">Название трека</string>
+    <string name="track_artist_placeholder">Исполнитель</string>
+    <string name="placeholder_description">Описание плейсхолдера</string>
+
+    <!-- Track errors -->
+    <string name="track_error_no_result">По вашему запросу ничего не найдено</string>
+    <string name="track_error_no_internet">Отсутствует подключение к интернету</string>
+    <string name="track_error_server_error">Ошибка сервера. Попробуйте позже</string>
+    <string name="track_error_unknown_error">Произошла неизвестная ошибка</string>
+
+</resources>
