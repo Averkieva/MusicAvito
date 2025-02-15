@@ -2,10 +2,10 @@ package com.example.feature_api_tracks.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.feature_api_tracks.data.api.DeezerApiService
 import com.example.feature_api_tracks.data.repository.ApiTrackRepositoryImpl
 import com.example.feature_api_tracks.domain.search.repository.ApiTrackRepository
 import com.example.feature_api_tracks.ui.search.viewmodel.ApiTrackViewModel
+import com.example.feature_playback_tracks.data.api.DeezerApiService
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
