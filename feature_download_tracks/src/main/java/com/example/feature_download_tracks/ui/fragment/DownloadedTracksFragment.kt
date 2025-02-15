@@ -1,5 +1,6 @@
 package com.example.feature_download_tracks.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -54,6 +55,7 @@ class DownloadedTracksFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -68,8 +70,15 @@ class DownloadedTracksFragment : Fragment() {
         setupSearch()
 
         viewModel.searchResults.observe(viewLifecycleOwner) { tracks ->
-            adapter.submitList(tracks)
-            sharedViewModel.setFilteredDownloadedTracks(tracks)
+            if (tracks.isNullOrEmpty()) {
+                binding.errorLayout.visibility = View.VISIBLE
+                binding.resultRecyclerView.visibility = View.GONE
+            } else {
+                binding.errorLayout.visibility = View.GONE
+                binding.resultRecyclerView.visibility = View.VISIBLE
+                adapter.submitList(tracks)
+                sharedViewModel.setFilteredDownloadedTracks(tracks)
+            }
         }
 
         binding.resultRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -79,6 +88,11 @@ class DownloadedTracksFragment : Fragment() {
                 }
             }
         })
+
+        binding.root.setOnTouchListener { _, _ ->
+            hideKeyboard()
+            false
+        }
     }
 
     private fun setupSearch() {
@@ -106,7 +120,9 @@ class DownloadedTracksFragment : Fragment() {
 
     private fun hideKeyboard() {
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(binding.root.windowToken, 0)
+        val view = requireActivity().currentFocus ?: View(requireContext())
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        view.clearFocus()
     }
 
     override fun onDestroyView() {
