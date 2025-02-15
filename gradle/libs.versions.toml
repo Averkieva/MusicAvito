@@ -1,5 +1,7 @@
 [versions]
 agp = "8.8.0"
+appcompatVersion = "1.6.1"
+coreKtxVersion = "1.9.0"
 daggerVersion = "2.48"
 fragmentKtx = "1.8.5"
 fragmentKtxVersion = "1.6.2"
@@ -11,26 +13,39 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 lifecycleLivedataKtx = "2.6.2"
+lifecycleLivedataKtxVersion = "2.6.1"
 lifecycleViewmodelKtx = "2.8.7"
 lifecycleViewmodelKtxVersion = "2.6.2"
 material = "1.12.0"
 activity = "1.10.0"
 constraintlayout = "2.2.0"
+media = "1.7.0"
+media2Session = "1.3.0"
+mediaVersion = "1.6.0"
 navigationFragmentKtxVersion = "2.7.4"
 navigationUiKtxVersion = "2.7.4"
 retrofit = "2.9.0"
 swiperefreshlayout = "1.1.0"
 navigationFragmentKtx = "2.8.7"
 navigationUiKtx = "2.8.7"
+lifecycleService = "2.8.7"
+media3Ui = "1.5.1"
 
 [libraries]
+androidx-appcompat-v161 = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
+androidx-core = { module = "androidx.core:core", version.ref = "coreKtxVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx-v190 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-fragment-ktx-v162 = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-lifecycle-livedata-ktx-v261 = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtxVersion" }
 androidx-lifecycle-livedata-ktx-v262 = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-viewmodel-ktx-v262 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtxVersion" }
+androidx-media = { module = "androidx.media:media", version.ref = "media" }
+androidx-media-v160 = { module = "androidx.media:media", version.ref = "mediaVersion" }
+androidx-media2-session = { module = "androidx.media2:media2-session", version.ref = "media2Session" }
 androidx-navigation-fragment-ktx-v274 = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtxVersion" }
 androidx-navigation-ui-ktx-v274 = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtxVersion" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
@@ -48,6 +63,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycleService" }
+androidx-media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3Ui" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
