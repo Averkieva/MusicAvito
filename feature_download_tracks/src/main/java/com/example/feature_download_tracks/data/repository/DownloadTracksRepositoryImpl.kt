@@ -7,6 +7,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
 
+/**
+ * Реализация `DownloadedTracksRepository`, которая управляет загруженными треками,
+ * сохраняя и извлекая их из `SharedPreferences`.
+ *
+ * @param context Контекст приложения, необходимый для доступа к `SharedPreferences`.
+ */
 class DownloadedTracksRepositoryImpl @Inject constructor(
     context: Context
 ) : DownloadedTracksRepository {
@@ -14,6 +20,11 @@ class DownloadedTracksRepositoryImpl @Inject constructor(
     private val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson()
 
+    /**
+     * Получает список загруженных треков из `SharedPreferences`.
+     *
+     * @return Список треков или пустой список, если данных нет.
+     */
     override fun getDownloadedTracks(): List<Track> {
         val json = sharedPreferences.getString(KEY_TRACKS, null)
         return if (json != null) {
@@ -24,6 +35,12 @@ class DownloadedTracksRepositoryImpl @Inject constructor(
         }
     }
 
+    /**
+     * Выполняет поиск загруженных треков по названию.
+     *
+     * @param query Строка поиска.
+     * @return Список треков, соответствующих запросу, или все треки, если запрос пустой.
+     */
     override fun searchTracks(query: String): List<Track> {
         val allTracks = getDownloadedTracks()
         return if (query.isBlank()) {
