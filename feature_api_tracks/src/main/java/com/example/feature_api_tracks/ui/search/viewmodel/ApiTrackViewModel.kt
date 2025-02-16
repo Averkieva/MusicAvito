@@ -10,6 +10,12 @@ import com.example.feature_api_tracks.domain.search.repository.ApiTrackRepositor
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel для работы с API треков.
+ * Позволяет загружать топовые треки, выполнять поиск и обрабатывать ошибки.
+ *
+ * @param trackRepository Репозиторий для загрузки данных о треках.
+ */
 class ApiTrackViewModel @Inject constructor(
     private val trackRepository: ApiTrackRepository
 ) : ViewModel() {
@@ -20,8 +26,16 @@ class ApiTrackViewModel @Inject constructor(
     private val _error = MutableLiveData<ApiTrackErrorHandler.TrackError?>()
     val error: LiveData<ApiTrackErrorHandler.TrackError?> get() = _error
 
+    /**
+     * Последний выполненный поисковый запрос.
+     * Если `null`, то показываются топовые треки.
+     */
     private var lastQuery: String? = null
 
+    /**
+     * Загружает топовые треки и очищает предыдущий поисковый запрос.
+     * В случае ошибки записывает ее в `_error`.
+     */
     fun loadTopTracks() {
         lastQuery = null
         viewModelScope.launch {
@@ -38,6 +52,12 @@ class ApiTrackViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Выполняет поиск треков по запросу.
+     * В случае ошибки записывает ее в `_error`.
+     *
+     * @param query Поисковый запрос.
+     */
     fun searchTracks(query: String) {
         lastQuery = query
         viewModelScope.launch {
@@ -54,6 +74,10 @@ class ApiTrackViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Восстанавливает список треков после изменения состояния (например, после поворота экрана).
+     * Если был выполнен поиск, то повторяет его, иначе загружает топовые треки.
+     */
     fun restoreLastTracks() {
         if (lastQuery.isNullOrEmpty()) {
             loadTopTracks()
@@ -62,6 +86,11 @@ class ApiTrackViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Проверяет, находится ли пользователь в режиме поиска.
+     *
+     * @return `true`, если выполнялся поиск, иначе `false`.
+     */
     fun isSearchMode(): Boolean {
         return !lastQuery.isNullOrEmpty()
     }
