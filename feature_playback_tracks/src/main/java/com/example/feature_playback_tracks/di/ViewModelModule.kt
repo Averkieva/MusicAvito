@@ -3,13 +3,13 @@ package com.example.feature_playback_tracks.di
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.feature_playback_tracks.data.api.DeezerApiService
+import com.example.core.ui.viewmodel.SharedTrackViewModel
+import com.example.core.data.api.DeezerApiService
 import com.example.feature_playback_tracks.data.repository.MediaPlayerRepositoryImpl
 import com.example.feature_playback_tracks.data.repository.PlayerTrackRepositoryImpl
 import com.example.feature_playback_tracks.domain.repository.MediaPlayerRepository
 import com.example.feature_playback_tracks.domain.repository.PlayerTrackRepository
 import com.example.feature_playback_tracks.ui.player.viewmodel.PlayerTrackViewModel
-import com.example.feature_playback_tracks.ui.player.viewmodel.SharedTrackViewModel
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

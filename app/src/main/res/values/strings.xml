@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MusicAvito</string>
+
+    <!-- bottom_nav_menu -->
+    <string name="search">Поиск</string>
+    <string name="downloads" translatable="false">Скачанные треки</string>
+
+    <!-- nav_graph -->
+    <string name="api_tracks_fragment" translatable="false">Api tracks fragment</string>
+    <string name="downloaded_tracks_fragment" translatable="false">Downloaded tracks fragment</string>
+    <string name="track_player_fragment" translatable="false">Track player fragment</string>
+
 </resources>

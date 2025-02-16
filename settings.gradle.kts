@@ -23,3 +23,5 @@ rootProject.name = "MusicAvito"
 include(":app")
 include(":feature_api_tracks")
 include(":feature_playback_tracks")
+include(":feature_download_tracks")
+include(":core")

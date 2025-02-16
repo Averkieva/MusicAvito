@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feature_playback_tracks.domain.model.Track
+import com.example.core.domain.model.Track
 import com.example.feature_playback_tracks.domain.repository.MediaPlayerRepository
 import com.example.feature_playback_tracks.domain.repository.PlayerTrackRepository
 import kotlinx.coroutines.Job

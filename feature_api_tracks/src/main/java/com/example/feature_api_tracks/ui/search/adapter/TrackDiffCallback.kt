@@ -1,7 +1,7 @@
 package com.example.feature_api_tracks.ui.search.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.feature_playback_tracks.domain.model.Track
+import com.example.core.domain.model.Track
 
 class TrackDiffCallback(
     private val oldList: List<Track>,

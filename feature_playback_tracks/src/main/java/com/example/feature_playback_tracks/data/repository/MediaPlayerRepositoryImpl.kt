@@ -3,8 +3,8 @@ package com.example.feature_playback_tracks.data.repository
 import android.media.MediaPlayer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.core.ui.viewmodel.SharedTrackViewModel
 import com.example.feature_playback_tracks.domain.repository.MediaPlayerRepository
-import com.example.feature_playback_tracks.ui.player.viewmodel.SharedTrackViewModel
 import javax.inject.Inject
 
 class MediaPlayerRepositoryImpl @Inject constructor(

@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.domain.model.Track
 import com.example.feature_api_tracks.data.repository.ApiTrackErrorHandler
 import com.example.feature_api_tracks.domain.search.repository.ApiTrackRepository
-import com.example.feature_playback_tracks.domain.model.Track
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -60,6 +60,10 @@ class ApiTrackViewModel @Inject constructor(
         } else {
             searchTracks(lastQuery!!)
         }
+    }
+
+    fun isSearchMode(): Boolean {
+        return !lastQuery.isNullOrEmpty()
     }
 }
 
