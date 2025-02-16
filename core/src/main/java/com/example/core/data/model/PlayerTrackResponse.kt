@@ -2,6 +2,9 @@ package com.example.core.data.model
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Модель ответа API для трека
+ */
 data class PlayerTrackResponse(
     val id: String,
     val title: String,
@@ -12,11 +15,17 @@ data class PlayerTrackResponse(
     @SerializedName("track_position") val trackPosition: Int,
 )
 
+/**
+ * Модель ответа API для исполнителя
+ */
 data class ArtistResponse(
     val id: String,
     val name: String
 )
 
+/**
+ * Модель ответа API для альбома
+ */
 data class AlbumResponse(
     val id: String,
     val title: String,

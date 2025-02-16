@@ -7,6 +7,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * Интерфейс для взаимодействия с API Deezer
+ */
 interface DeezerApiService {
     @GET("chart")
     suspend fun getTopTracks(): ChartResponse

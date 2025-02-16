@@ -15,6 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.core.databinding.FragmentTrackListBinding
 
+/**
+ * Абстрактный базовый фрагмент, от которого наследуются `ApiTrackFragment` и `DownloadedTracksFragment`.
+ * Позволяет управлять общими элементами UI, такими как RecyclerView, поиск и заголовок экрана.
+ *
+ * @param T Тип `ViewModel`, используемого во фрагменте.
+ * @param A Тип адаптера `RecyclerView.Adapter`, используемого для списка треков.
+ */
 abstract class BaseTracksFragment<T : ViewModel, A : RecyclerView.Adapter<*>>(
     private val layoutId: Int
 ) : Fragment() {
@@ -22,12 +29,17 @@ abstract class BaseTracksFragment<T : ViewModel, A : RecyclerView.Adapter<*>>(
     protected var _binding: FragmentTrackListBinding? = null
     protected val binding get() = _binding!!
 
+    // ViewModel и адаптер должны быть реализованы в наследниках
     protected abstract val viewModel: T
     protected abstract val adapter: A
 
     protected abstract val screenTitle: String
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentTrackListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,12 +52,16 @@ abstract class BaseTracksFragment<T : ViewModel, A : RecyclerView.Adapter<*>>(
         setupRecyclerView()
         setupSearch()
 
+        // Скрытие клавиатуры при касании вне полей ввода
         binding.root.setOnTouchListener { _, _ ->
             hideKeyboard()
             false
         }
     }
 
+    /**
+     * Добавляется `OnScrollListener`, который скрывает клавиатуру при прокрутке.
+     */
     private fun setupRecyclerView() {
         binding.resultRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -59,11 +75,17 @@ abstract class BaseTracksFragment<T : ViewModel, A : RecyclerView.Adapter<*>>(
         }
     }
 
+    /**
+     * Настройка поля поиска.
+     * - Отслеживает изменения текста и обновляет кнопку очистки.
+     * - При очистке вызовет `onSearchCleared()`.
+     */
     private fun setupSearch() {
         binding.searchInputEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
-                binding.cancelButton.visibility = if (query.isNotEmpty()) View.VISIBLE else View.GONE
+                binding.cancelButton.visibility =
+                    if (query.isNotEmpty()) View.VISIBLE else View.GONE
                 onSearchQueryChanged(query)
             }
 
@@ -77,14 +99,30 @@ abstract class BaseTracksFragment<T : ViewModel, A : RecyclerView.Adapter<*>>(
         }
     }
 
+    /**
+     * Метод вызывается при изменении запроса в поле поиска.
+     * Может быть переопределён в наследниках для обработки поиска.
+     */
     protected open fun onSearchQueryChanged(query: String) {}
+
+    /**
+     * Метод вызывается при очистке поиска.
+     * Может быть переопределён в наследниках для дополнительных действий.
+     */
     protected open fun onSearchCleared() {}
 
+    /**
+     * Скрывает клавиатуру, если она открыта.
+     */
     private fun hideKeyboard() {
-        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
+    /**
+     * Устанавливает заголовок экрана.
+     */
     private fun updateScreenTitle() {
         binding.searchTextView.text = screenTitle
     }

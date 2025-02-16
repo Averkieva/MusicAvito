@@ -21,6 +21,12 @@ class TrackDownloader(
 ) {
     private val client = OkHttpClient()
 
+    /**
+     * Загружает трек по указанному URL и сохраняет его в файловой системе устройства.
+     * @param track Трек, который нужно загрузить.
+     * @param onSuccess Колбэк, вызываемый при успешной загрузке.
+     * @param onError Колбэк, вызываемый при ошибке загрузки.
+     */
     fun downloadTrack(track: Track, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -29,18 +35,27 @@ class TrackDownloader(
 
                 if (!response.isSuccessful) {
                     withContext(Dispatchers.Main) {
-                        onError(Exception(context.getString(R.string.download_error, response.code())))
+                        onError(
+                            Exception(
+                                context.getString(
+                                    R.string.download_error,
+                                    response.code()
+                                )
+                            )
+                        )
                     }
                     return@launch
                 }
 
+                // Безопасное название файла (замена запрещенных символов в названии трека)
                 val safeTitle = track.title.replace(Regex("[^a-zA-Z0-9_\\- ]"), "_")
                 val file = File(context.getExternalFilesDir(null), "$safeTitle.mp3")
 
+                // Проверяем, существует ли родительская директория, и создаем её при необходимости
                 file.parentFile?.let {
                     if (!it.exists()) {
                         if (it.mkdirs()) {
-                            Log.d("TrackDownloader", "Directory crated: ${it.absolutePath}")
+                            Log.d("TrackDownloader", "Directory created: ${it.absolutePath}")
                         } else {
                             throw Exception(context.getString(R.string.create_directory_error))
                         }
@@ -54,6 +69,7 @@ class TrackDownloader(
                     inputStream.copyTo(output)
                 }
 
+                // Создаем копию трека с обновленным путем к файлу
                 val downloadedTrack = track.copy(
                     preview = file.absolutePath,
                     album = track.album.copy(cover = track.album.cover),
