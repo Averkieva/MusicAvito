@@ -17,19 +17,40 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * `PlayerTrackViewModel` управляет логикой воспроизведения трека, взаимодействует с `MediaPlayerRepository`
+ * и отслеживает состояние приложения (фоновый/передний план).
+ *
+ * @param appContext Контекст приложения, используется для запуска сервисов и отправки уведомлений.
+ * @param trackRepository Репозиторий для загрузки информации о треке.
+ * @param mediaPlayerRepository Репозиторий, управляющий воспроизведением треков.
+ */
 class PlayerTrackViewModel @Inject constructor(
     private val appContext: Context,
     private val trackRepository: PlayerTrackRepository,
     private val mediaPlayerRepository: MediaPlayerRepository
 ) : ViewModel(), LifecycleObserver {
 
+    /**
+     * `LiveData`, содержащая текущий воспроизводимый трек.
+     */
     private val _track = MutableLiveData<Track?>()
     val track: LiveData<Track?> get() = _track
+
+    /**
+     * `LiveData`, отслеживающая состояние воспроизведения (играет/не играет).
+     */
     val isPlaying: LiveData<Boolean> get() = mediaPlayerRepository.isPlaying
 
+    /**
+     * `LiveData`, содержащая текущее положение воспроизведения.
+     */
     private val _trackProgress = MutableLiveData<Int>()
     val trackProgress: LiveData<Int> get() = _trackProgress
 
+    /**
+     * `LiveData`, содержащая длительность трека.
+     */
     private val _trackDuration = MutableLiveData<Int>()
     val trackDuration: LiveData<Int> get() = _trackDuration
 
@@ -40,6 +61,12 @@ class PlayerTrackViewModel @Inject constructor(
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
 
+    /**
+     * Загружает трек по `trackId` и подготавливает `MediaPlayer`.
+     *
+     * @param trackId ID трека.
+     * @param autoPlay `true`, если трек должен начать воспроизводиться автоматически.
+     */
     @SuppressLint("StringFormatInvalid")
     fun loadTrack(trackId: String, autoPlay: Boolean = true) {
         viewModelScope.launch {
@@ -47,34 +74,48 @@ class PlayerTrackViewModel @Inject constructor(
             result.fold(
                 onSuccess = { track ->
                     _track.value = track
-                    _trackDuration.value = (track.duration * MILLISECONDS_IN_SECOND).coerceAtMost(MAX_TRACK_DURATION_MS)
+                    _trackDuration.value = (track.duration * MILLISECONDS_IN_SECOND)
+                        .coerceAtMost(MAX_TRACK_DURATION_MS)
                     mediaPlayerRepository.prepareMediaPlayer(track.preview, autoPlay)
                     startTrackingProgress()
                 },
                 onFailure = { error ->
-                    Toast.makeText(appContext, appContext.getString(R.string.track_download_error, error.message), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        appContext,
+                        appContext.getString(R.string.track_download_error, error.message),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             )
         }
     }
 
+    /** Переключает состояние воспроизведения (играет/пауза). */
     fun togglePlayPause() {
         mediaPlayerRepository.togglePlayPause()
     }
 
+    /** Перематывает трек вперед на 10 секунд. */
     fun skipToNext() {
         mediaPlayerRepository.skipToNext()
     }
 
+    /** Перематывает трек назад на 10 секунд. */
     fun skipToPrevious() {
         mediaPlayerRepository.skipToPrevious()
     }
 
+    /**
+     * Перематывает трек на заданную позицию.
+     *
+     * @param progress Новая позиция воспроизведения в миллисекундах.
+     */
     fun seekTo(progress: Int) {
         mediaPlayerRepository.seekTo(progress)
         _trackProgress.value = progress
     }
 
+    /** Запускает обновление прогресса воспроизведения трека. */
     private fun startTrackingProgress() {
         viewModelScope.launch {
             while (true) {
@@ -85,6 +126,10 @@ class PlayerTrackViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Обрабатывает переход приложения в фоновый режим.
+     * Останавливает `MediaPlayer` и передает воспроизведение сервису `MusicService`.
+     */
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {
         if (isPlaying.value == true) {
@@ -103,6 +148,10 @@ class PlayerTrackViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Обрабатывает возвращение приложения в передний план.
+     * Запрашивает текущую позицию воспроизведения у `MusicService`.
+     */
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onAppForegrounded() {
         if (isBackgroundMode) {
@@ -115,6 +164,9 @@ class PlayerTrackViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Получает обновления от `MusicService` о текущем положении воспроизведения и статусе плеера.
+     */
     private val positionReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
@@ -160,6 +212,7 @@ class PlayerTrackViewModel @Inject constructor(
         )
     }
 
+    /** Освобождает ресурсы `MediaPlayer` при уничтожении `ViewModel`. */
     override fun onCleared() {
         super.onCleared()
         mediaPlayerRepository.releasePlayer()

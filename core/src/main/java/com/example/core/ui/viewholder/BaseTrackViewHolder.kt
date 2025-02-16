@@ -37,11 +37,14 @@ abstract class BaseTrackViewHolder(
             .load(track.album.cover)
             .placeholder(R.drawable.cover_placeholder)
             .error(R.drawable.cover_placeholder)
-            .transform(CenterCrop(), RoundedCorners(10))
+            .transform(CenterCrop(), RoundedCorners(ROUNDED_CORNER))
             .into(binding.trackCoverImageView)
 
         binding.root.setOnClickListener {
             onTrackClick(track.id)
         }
+    }
+    companion object {
+        private const val ROUNDED_CORNER = 10
     }
 }

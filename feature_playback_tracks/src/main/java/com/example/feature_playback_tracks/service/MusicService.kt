@@ -10,6 +10,11 @@ import android.os.Looper
 import androidx.core.app.NotificationCompat
 import com.example.core.utils.TimeAndDateUtils.formatTimeFromMillis
 
+/**
+ * `MusicService` – фоновый сервис для управления воспроизведением музыки.
+ * Использует `MediaPlayer` для воспроизведения аудио и отправляет обновления
+ * о состоянии плеера через `Broadcast`.
+ */
 class MusicService : Service() {
 
     private var mediaPlayer: MediaPlayer? = null
@@ -23,6 +28,9 @@ class MusicService : Service() {
         createNotificationChannel()
     }
 
+    /**
+     * Обрабатывает команды управления воспроизведением, полученные через `Intent`.
+     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_PAUSE -> pausePlayback()
@@ -57,6 +65,9 @@ class MusicService : Service() {
         return START_NOT_STICKY
     }
 
+    /**
+     * Очищает ресурсы при уничтожении сервиса.
+     */
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(updateProgressRunnable)
@@ -64,6 +75,9 @@ class MusicService : Service() {
         mediaPlayer = null
     }
 
+    /**
+     * Отправляет обновления о текущем положении воспроизведения через `Broadcast`.
+     */
     private val updateProgressRunnable = object : Runnable {
         override fun run() {
             mediaPlayer?.let {
@@ -78,6 +92,9 @@ class MusicService : Service() {
         }
     }
 
+    /**
+     * Останавливает воспроизведение и освобождает ресурсы `MediaPlayer`.
+     */
     private fun stopPlayback() {
         mediaPlayer?.stop()
         mediaPlayer?.release()
@@ -86,6 +103,12 @@ class MusicService : Service() {
         stopSelf()
     }
 
+    /**
+     * Начинает воспроизведение указанного аудиофайла.
+     *
+     * @param url URL аудиофайла.
+     * @param startPosition Начальная позиция воспроизведения в миллисекундах.
+     */
     private fun startPlayback(url: String, startPosition: Int = 0) {
         mediaPlayer?.reset()
         mediaPlayer?.setDataSource(url)
@@ -99,6 +122,9 @@ class MusicService : Service() {
         }
     }
 
+    /**
+     * Ставит воспроизведение на паузу.
+     */
     private fun pausePlayback() {
         mediaPlayer?.pause()
         handler.removeCallbacks(updateProgressRunnable)
@@ -106,6 +132,9 @@ class MusicService : Service() {
         showNotification(false)
     }
 
+    /**
+     * Возобновляет воспроизведение.
+     */
     private fun resumePlayback() {
         mediaPlayer?.start()
         handler.post(updateProgressRunnable)
@@ -113,6 +142,11 @@ class MusicService : Service() {
         showNotification(true)
     }
 
+    /**
+     * Отправляет `Broadcast` о текущем состоянии воспроизведения.
+     *
+     * @param isPlaying `true`, если воспроизведение идет, иначе `false`.
+     */
     private fun sendPlaybackState(isPlaying: Boolean) {
         val intent = Intent(INTENT_PLAYBACK_STATE).apply {
             putExtra(EXTRA_IS_PLAYING, isPlaying)
@@ -120,6 +154,11 @@ class MusicService : Service() {
         sendBroadcast(intent)
     }
 
+    /**
+     * Отображает уведомление с текущим состоянием воспроизведения.
+     *
+     * @param isPlaying `true`, если воспроизведение идет, иначе `false`.
+     */
     private fun showNotification(isPlaying: Boolean) {
         val playPauseAction = if (isPlaying) {
             NotificationCompat.Action(
@@ -154,6 +193,9 @@ class MusicService : Service() {
         startForeground(NOTIFICATION_ID, notification)
     }
 
+    /**
+     * Создает канал уведомлений для Android 8+.
+     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val serviceChannel = NotificationChannel(
