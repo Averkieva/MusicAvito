@@ -1,11 +1,11 @@
 package com.example.feature_api_tracks.data.repository
 
+import com.example.core.data.api.DeezerApiService
+import com.example.core.utils.TimeAndDateUtils.formatReleaseDate
+import com.example.core.domain.model.Album
+import com.example.core.domain.model.Artist
+import com.example.core.domain.model.Track
 import com.example.feature_api_tracks.domain.search.repository.ApiTrackRepository
-import com.example.feature_playback_tracks.data.api.DeezerApiService
-import com.example.feature_playback_tracks.domain.model.Album
-import com.example.feature_playback_tracks.domain.model.Artist
-import com.example.feature_playback_tracks.domain.model.Track
-import com.example.feature_playback_tracks.utils.TimeAndDateUtils.formatReleaseDate
 
 class ApiTrackRepositoryImpl(private val apiService: DeezerApiService) : ApiTrackRepository {
 

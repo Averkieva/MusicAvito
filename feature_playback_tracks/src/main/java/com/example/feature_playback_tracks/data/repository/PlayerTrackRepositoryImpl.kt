@@ -1,11 +1,11 @@
 package com.example.feature_playback_tracks.data.repository
 
-import com.example.feature_playback_tracks.data.api.DeezerApiService
-import com.example.feature_playback_tracks.domain.model.Album
-import com.example.feature_playback_tracks.domain.model.Artist
-import com.example.feature_playback_tracks.domain.model.Track
+import com.example.core.data.api.DeezerApiService
+import com.example.core.utils.TimeAndDateUtils.formatReleaseDate
+import com.example.core.domain.model.Album
+import com.example.core.domain.model.Artist
+import com.example.core.domain.model.Track
 import com.example.feature_playback_tracks.domain.repository.PlayerTrackRepository
-import com.example.feature_playback_tracks.utils.TimeAndDateUtils.formatReleaseDate
 import javax.inject.Inject
 
 class PlayerTrackRepositoryImpl @Inject constructor(

@@ -11,9 +11,9 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.core.ui.viewmodel.SharedTrackViewModel
 import com.example.feature_playback_tracks.data.repository.MediaPlayerRepositoryImpl
 import com.example.feature_playback_tracks.domain.repository.MediaPlayerRepository
-import com.example.feature_playback_tracks.ui.player.viewmodel.SharedTrackViewModel
 
 class MediaPlaybackService : Service() {
 

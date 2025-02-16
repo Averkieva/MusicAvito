@@ -8,7 +8,7 @@
         android:id="@+id/apiTrackFragment"
         android:name="com.example.feature_api_tracks.ui.search.fragment.ApiTrackFragment"
         android:label="@string/api_tracks_fragment"
-        tools:layout="@layout/fragment_api_tracks">
+        tools:layout="@layout/fragment_track_list">
 
     </fragment>
 
@@ -16,7 +16,7 @@
         android:id="@+id/downloadedTracksFragment"
         android:name="com.example.feature_download_tracks.ui.fragment.DownloadedTracksFragment"
         android:label="@string/downloaded_tracks_fragment"
-        tools:layout="@layout/fragment_downloaded_tracks" />
+        tools:layout="@layout/fragment_track_list" />
 
 
     <fragment

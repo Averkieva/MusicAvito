@@ -17,15 +17,17 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.core.data.TrackDownloader
+import com.example.core.ui.viewmodel.SharedTrackViewModel
+import com.example.core.utils.TimeAndDateUtils
+import com.example.core.utils.TimeAndDateUtils.formatTimeFromMillis
+import com.example.core.domain.model.Track
 import com.example.feature_playback_tracks.MediaPlaybackService
 import com.example.feature_playback_tracks.R
 import com.example.feature_playback_tracks.databinding.FragmentTrackPlayerBinding
 import com.example.feature_playback_tracks.di.DaggerFeatureComponent
-import com.example.feature_playback_tracks.domain.model.Track
 import com.example.feature_playback_tracks.ui.player.viewmodel.PlayerTrackViewModel
-import com.example.feature_playback_tracks.ui.player.viewmodel.SharedTrackViewModel
-import com.example.feature_playback_tracks.utils.TimeAndDateUtils
-import com.example.feature_playback_tracks.utils.TimeAndDateUtils.formatTimeFromMillis
+
 import javax.inject.Inject
 
 class PlayerTrackFragment : Fragment() {
@@ -156,7 +158,6 @@ class PlayerTrackFragment : Fragment() {
             .transform(CenterCrop(), RoundedCorners(10))
             .into(binding.albumCoverImageView)
 
-        // Проверка статуса загрузки трека
         sharedViewModel.isTrackDownloaded(track.id).observe(viewLifecycleOwner) { isDownloaded ->
             if (isDownloaded) {
                 binding.downloadTrackButton.text = getString(R.string.already_downloaded)

@@ -35,7 +35,7 @@ android {
 
 dependencies {
     implementation(project(":feature_playback_tracks"))
-
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

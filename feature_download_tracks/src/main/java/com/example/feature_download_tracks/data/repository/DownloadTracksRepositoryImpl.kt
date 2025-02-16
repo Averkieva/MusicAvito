@@ -1,8 +1,8 @@
 package com.example.feature_download_tracks.data.repository
 
 import android.content.Context
+import com.example.core.domain.model.Track
 import com.example.feature_download_tracks.domain.repository.DownloadedTracksRepository
-import com.example.feature_playback_tracks.domain.model.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject

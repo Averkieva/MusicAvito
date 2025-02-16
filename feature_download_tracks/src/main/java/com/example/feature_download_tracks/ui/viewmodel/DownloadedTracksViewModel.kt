@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core.domain.model.Track
 import com.example.feature_download_tracks.domain.repository.DownloadedTracksRepository
-import com.example.feature_playback_tracks.domain.model.Track
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
