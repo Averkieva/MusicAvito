@@ -21,5 +21,6 @@
     <!-- TrackDownloaderErrors toasts -->
     <string name="download_error">Ошибка загрузки: %1$d</string>
     <string name="stream_read_error">Ошибка чтения потока</string>
+    <string name="create_directory_error">Ошибка: не удалось создать директорию для сохранения трека</string>
 
 </resources>

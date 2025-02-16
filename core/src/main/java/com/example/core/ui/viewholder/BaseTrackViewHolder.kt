@@ -9,26 +9,42 @@ import com.example.core.R
 import com.example.core.domain.model.Track
 import com.example.core.databinding.ItemTrackBinding
 
+/**
+ * Абстрактный базовый ViewHolder для элемента списка треков.
+ * Позволяет переиспользовать базовую логику привязки данных (`bind`) в различных адаптерах.
+ *
+ * @param binding Объект `ItemTrackBinding`, содержащий ссылки на UI-элементы.
+ * @param onTrackClick Лямбда-функция, вызываемая при клике по треку, принимает `trackId`.
+ */
 abstract class BaseTrackViewHolder(
     private val binding: ItemTrackBinding,
     private val onTrackClick: (String) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    /**
+     * Метод для привязки данных к UI-элементам элемента списка.
+     * Может быть переопределён в наследниках, если требуется кастомизация.
+     */
     open fun bind(track: Track) {
         binding.trackTitleTextView.text = track.title
+
         val formattedDuration = TimeAndDateUtils.formatDuration(track.duration)
         val artistWithDuration = "${track.artist.name} • $formattedDuration"
+
         binding.trackArtistTextView.text = artistWithDuration
 
         Glide.with(binding.root)
             .load(track.album.cover)
             .placeholder(R.drawable.cover_placeholder)
             .error(R.drawable.cover_placeholder)
-            .transform(CenterCrop(), RoundedCorners(10))
+            .transform(CenterCrop(), RoundedCorners(ROUNDED_CORNER))
             .into(binding.trackCoverImageView)
 
         binding.root.setOnClickListener {
             onTrackClick(track.id)
         }
+    }
+    companion object {
+        private const val ROUNDED_CORNER = 10
     }
 }
