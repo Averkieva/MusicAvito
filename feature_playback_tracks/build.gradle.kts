@@ -61,6 +61,7 @@ dependencies {
     implementation (libs.androidx.media)
     implementation(libs.androidx.lifecycle.service)
     implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.lifecycle.process)
     kapt(libs.dagger.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

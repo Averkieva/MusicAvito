@@ -1,14 +1,11 @@
 package com.example.musicavito
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import androidx.core.content.ContextCompat
 import androidx.navigation.ui.setupWithNavController
-import com.example.feature_playback_tracks.MediaPlaybackService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -31,11 +28,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        startPlaybackService()
-    }
-
-    private fun startPlaybackService() {
-        val intent = Intent(this, MediaPlaybackService::class.java)
-        ContextCompat.startForegroundService(this, intent)
     }
 }

@@ -2,7 +2,6 @@ package com.example.feature_playback_tracks.ui.player.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +21,6 @@ import com.example.core.ui.viewmodel.SharedTrackViewModel
 import com.example.core.utils.TimeAndDateUtils
 import com.example.core.utils.TimeAndDateUtils.formatTimeFromMillis
 import com.example.core.domain.model.Track
-import com.example.feature_playback_tracks.MediaPlaybackService
 import com.example.feature_playback_tracks.R
 import com.example.feature_playback_tracks.databinding.FragmentTrackPlayerBinding
 import com.example.feature_playback_tracks.di.DaggerFeatureComponent
@@ -59,7 +57,6 @@ class PlayerTrackFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startPlaybackService()
         val trackId = arguments?.getString(TRACK_ID_KEY)
         if (trackId == null) {
             showToast(getString(R.string.error_no_track_id))
@@ -72,11 +69,6 @@ class PlayerTrackFragment : Fragment() {
         setupListeners()
         setupSeekBar()
         viewModel.loadTrack(trackId)
-    }
-
-    private fun startPlaybackService() {
-        val intent = Intent(requireContext(), MediaPlaybackService::class.java)
-        requireContext().startService(intent)
     }
 
     private fun setupObservers() {

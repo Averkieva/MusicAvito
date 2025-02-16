@@ -39,10 +39,11 @@ class ViewModelModule {
 
     @Provides
     fun providePlayerTrackViewModel(
+        activity: FragmentActivity,
         trackRepository: PlayerTrackRepository,
-        mediaPlayerRepository: MediaPlayerRepository
+        mediaPlayerRepository: MediaPlayerRepository,
     ): PlayerTrackViewModel {
-        return PlayerTrackViewModel(trackRepository, mediaPlayerRepository)
+        return PlayerTrackViewModel(activity.applicationContext, trackRepository, mediaPlayerRepository)
     }
 
     @Provides

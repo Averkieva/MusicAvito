@@ -1,6 +1,7 @@
 package com.example.core.data
 
 import android.content.Context
+import android.util.Log
 import com.example.core.R
 import com.example.core.domain.model.Track
 import com.example.core.ui.viewmodel.SharedTrackViewModel
@@ -33,7 +34,19 @@ class TrackDownloader(
                     return@launch
                 }
 
-                val file = File(context.getExternalFilesDir(null), "${track.title}.mp3")
+                val safeTitle = track.title.replace(Regex("[^a-zA-Z0-9_\\- ]"), "_")
+                val file = File(context.getExternalFilesDir(null), "$safeTitle.mp3")
+
+                file.parentFile?.let {
+                    if (!it.exists()) {
+                        if (it.mkdirs()) {
+                            Log.d("TrackDownloader", "Directory crated: ${it.absolutePath}")
+                        } else {
+                            throw Exception(context.getString(R.string.create_directory_error))
+                        }
+                    }
+                }
+
                 val inputStream: InputStream = response.body()?.byteStream()
                     ?: throw Exception(context.getString(R.string.stream_read_error))
 
